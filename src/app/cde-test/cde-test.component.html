@@ -1,0 +1,56 @@
+<div class="spacer-sm"></div>
+<h3>Data Test</h3>
+<div class="spacer-sm"></div>
+<h4>Offense Count for ORI: {{curOri}}</h4>
+<div class="spacer-sm"></div>
+<table class="table  table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Year</th>
+      <th scope="col">Month</th>
+      <th scope="col">Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let offenseRecord of nibrsOffenseCounts" [ngStyle]="{ 'background-color' : (offenseRecord.value > 120 && offenseRecord.value < 180) ? 'yellow' : (offenseRecord.value > 180) ? 'red' : '#fff'}" >
+      <td>{{ offenseRecord.data_year }}</td>
+      <td>{{ offenseRecord.month_num + 1 }}</td>
+      <td>{{ offenseRecord.value }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="spacer-sm"></div>
+<nb-card>
+  <nb-card-body>
+    <label class="search-label" for="search">Search:</label>
+    <input nbInput [nbFilterInput]="dataSource" id="search" class="search-input">
+
+    <table [nbTreeGrid]="dataSource" [nbSort]="dataSource" (sort)="updateSort($event)">
+
+      <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumns"></tr>
+      <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns"></tr>
+
+      <ng-container [nbTreeGridColumnDef]="customColumn">
+        <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(customColumn)" *nbTreeGridHeaderCellDef>
+          {{customColumn}}
+        </th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">
+          <nb-fs-icon [kind]="row.data.kind" [expanded]="row.expanded"></nb-fs-icon>
+          {{row.data[customColumn]}}
+        </td>
+      </ng-container>
+
+      <ng-container *ngFor="let column of defaultColumns; let index = index"
+                    [nbTreeGridColumnDef]="column"
+                    [showOn]="getShowOn(index)">
+        <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
+          {{column}}
+        </th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data[column] || '-'}}</td>
+      </ng-container>
+
+    </table>
+
+  </nb-card-body>
+</nb-card>

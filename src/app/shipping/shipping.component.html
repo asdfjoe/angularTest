@@ -1,0 +1,28 @@
+<div class="spacer-sm"></div>
+<h3>Shipping Prices</h3>
+
+<div class="shipping-item" *ngFor="let shipping of shippingCosts | async">
+  <span>{{ shipping.type }}</span>
+  <span>{{ shipping.price | currency }}</span>
+</div>
+<div class="spacer-sm"></div>
+<h3>CDE API Test</h3>
+<div class="spacer-sm"></div>
+<h4>Offense Count for ORI: {{curOri}}</h4>
+<div class="spacer-sm"></div>
+<table class="table  table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Year</th>
+      <th scope="col">Month</th>
+      <th scope="col">Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let offenseRecord of nibrsOffenseCounts" [ngStyle]="{ 'background-color' : (offenseRecord.value > 120) ? 'yellow' : (offenseRecord.value > 180) ? 'red' : '#fff'}" >
+      <td>{{ offenseRecord.data_year }}</td>
+      <td>{{ offenseRecord.month_num + 1 }}</td>
+      <td>{{ offenseRecord.value }}</td>
+    </tr>
+  </tbody>
+</table>
